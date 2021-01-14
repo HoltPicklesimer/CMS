@@ -1,8 +1,10 @@
 <div class="panel panel-default">
-   <div class="panel-heading" style="height: 240px;">
+   <div class="panel-heading">
       <h2>{{ contact.name }}</h2>
-      <img src="{{ contact.imageUrl }}" alt="{{ contact.name }}" class="img-responsive pull-left" style="width: 100px;">
-      <div class="pull-right row justify-content-center align-self-center">
+      <div class="pull-left">
+         <img src="{{ contact.imageUrl }}" alt="{{ contact.name }}">
+      </div>
+      <div class="pull-right btn-toolbar">
          <button class="btn btn-primary">Edit</button>
          <button class="btn btn-danger">Delete</button>
       </div>
@@ -11,11 +13,11 @@
       <div class="row">
          <div class="col-xs-12">
             <div>
-               <label for="">Email:</label>
+               <label>Email:</label>
                <span> {{ contact.email }}</span>
             </div>
             <div>
-               <label for="">Phone:</label>
+               <label>Phone:</label>
                <span> {{ contact.phone }}</span>
             </div>
          </div>
