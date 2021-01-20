@@ -17,7 +17,8 @@ export class MessageEditComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSendMessage() {
+  onSendMessage(event: Event) {
+    event.preventDefault();
     let newSubject = this.subject.nativeElement.value;
     let newMessage = this.msgText.nativeElement.value;
     let message = new Message('0', newSubject, newMessage, this.currentSender);
