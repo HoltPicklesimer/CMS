@@ -10,7 +10,7 @@ export class MessageEditComponent implements OnInit {
   @ViewChild('subject', {static: false}) subject: ElementRef;
   @ViewChild('msgText', {static: false}) msgText: ElementRef;
   @Output() addMessageEvent = new EventEmitter<Message>();
-  currentSender: string = 'Ethan Picklesimer';
+  currentSender = 'Ethan Picklesimer';
 
   constructor() { }
 
@@ -18,10 +18,11 @@ export class MessageEditComponent implements OnInit {
   }
 
   onSendMessage() {
-    let newSubject = this.subject.nativeElement.value;
-    let newMessage = this.msgText.nativeElement.value;
-    let message = new Message('0', newSubject, newMessage, this.currentSender);
+    const newSubject = this.subject.nativeElement.value;
+    const newMessage = this.msgText.nativeElement.value;
+    const message = new Message('0', newSubject, newMessage, this.currentSender);
     this.addMessageEvent.emit(message);
+    this.onClear();
   }
 
   onClear() {
