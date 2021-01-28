@@ -7,7 +7,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./documents.component.css']
 })
 export class DocumentsComponent implements OnInit {
-  @Output() selectedDocument = new EventEmitter<Document>();
+  @Output() selectedDocument: Document;
 
   constructor() { }
 

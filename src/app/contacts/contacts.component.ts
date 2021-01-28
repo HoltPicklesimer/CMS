@@ -7,7 +7,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./contacts.component.css']
 })
 export class ContactsComponent implements OnInit {
-  @Output() selectedContact = new EventEmitter<Contact>();
+  @Output() selectedContact: Contact;
 
   constructor() { }
 
