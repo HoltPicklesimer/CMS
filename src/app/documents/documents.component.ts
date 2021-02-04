@@ -8,7 +8,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./documents.component.css']
 })
 export class DocumentsComponent implements OnInit {
-  @Output() selectedDocument: Document;
+  selectedDocument: Document;
 
   constructor(private documentService: DocumentService) { }
 
