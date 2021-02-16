@@ -9,24 +9,24 @@ import { NgModule } from '@angular/core';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
 
 const appRoutes: Routes = [
-  { path: ``, redirectTo: `/documents`, pathMatch: 'full' },
+  { path: '', redirectTo: '/documents', pathMatch: 'full' },
   {
-    path: `documents`,
+    path: 'documents',
     component: DocumentsComponent,
     children: [
-      { path: `new`, component: DocumentEditComponent },
-      { path: `:id`, component: DocumentDetailComponent },
-      { path: `:id/edit`, component: DocumentEditComponent },
+      { path: 'new', component: DocumentEditComponent },
+      { path: ':id', component: DocumentDetailComponent },
+      { path: ':id/edit', component: DocumentEditComponent },
     ],
   },
-  { path: `messages`, component: MessageListComponent },
+  { path: 'messages', component: MessageListComponent },
   {
-    path: `contacts`,
+    path: 'contacts',
     component: ContactsComponent,
     children: [
-      { path: `new`, component: ContactEditComponent },
-      { path: `:id`, component: ContactDetailComponent },
-      { path: `:id/edit`, component: ContactEditComponent },
+      { path: 'new', component: ContactEditComponent },
+      { path: ':id', component: ContactDetailComponent },
+      { path: ':id/edit', component: ContactEditComponent },
     ],
   },
 ];
