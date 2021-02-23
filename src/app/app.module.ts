@@ -19,6 +19,7 @@ import { MessageListComponent } from './messages/message-list/message-list.compo
 import { AppRoutingModule } from './app-routing.module';
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { ContactEditComponent } from './contacts/contact-edit/contact-edit.component';
+import { DndModule } from 'ng2-dnd';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { ContactEditComponent } from './contacts/contact-edit/contact-edit.compo
     DocumentEditComponent,
     ContactEditComponent,
   ],
-  imports: [BrowserModule, FormsModule, AppRoutingModule],
+  imports: [BrowserModule, FormsModule, AppRoutingModule, DndModule.forRoot()],
   providers: [],
   bootstrap: [AppComponent],
 })

@@ -24,6 +24,14 @@
           <label>Phone:</label>
           <span> {{ contact?.phone }}</span>
         </div>
+        <div>
+          <label>Contacts in Team:</label>
+          <div *ngFor="let contactItem of contact?.group; let i = index">
+            <div>
+              <cms-contact-item [contact]="contactItem"></cms-contact-item>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
