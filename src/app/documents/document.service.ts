@@ -2,6 +2,7 @@ import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 import { Document } from './document.model';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -11,9 +12,8 @@ export class DocumentService {
   private documents: Document[] = [];
   private maxDocumentId: number;
 
-  constructor() {
-    this.documents = MOCKDOCUMENTS;
-    this.maxDocumentId = this.getMaxId();
+  constructor(private http: HttpClient) {
+    this.fetchDocuments();
   }
 
   getDocuments() {
@@ -35,7 +35,7 @@ export class DocumentService {
     }
 
     this.documents.splice(pos, 1);
-    this.documentListChangedEvent.next(this.documents.slice());
+    this.storeDocuments();
   }
 
   getMaxId(): number {
@@ -59,7 +59,7 @@ export class DocumentService {
     this.maxDocumentId++;
     newDocument.id = String(this.maxDocumentId);
     this.documents.push(newDocument);
-    this.documentListChangedEvent.next(this.documents.slice());
+    this.storeDocuments();
   }
 
   updateDocument(originalDocument: Document, newDocument: Document) {
@@ -74,6 +74,31 @@ export class DocumentService {
 
     newDocument.id = originalDocument.id;
     this.documents[pos] = newDocument;
-    this.documentListChangedEvent.next(this.documents.slice());
+    this.storeDocuments();
+  }
+
+  fetchDocuments() {
+    this.http
+      .get<Document[]>(
+        'https://ng-cms-d4319-default-rtdb.firebaseio.com/documents.json'
+      )
+      .subscribe((documents: Document[]) => {
+        this.documents = documents.sort((a, b) =>
+          a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+        );
+        this.maxDocumentId = this.getMaxId();
+        this.documentListChangedEvent.next(this.documents.slice());
+      });
+  }
+
+  storeDocuments() {
+    this.http
+      .put(
+        'https://ng-cms-d4319-default-rtdb.firebaseio.com/documents.json',
+        this.documents
+      )
+      .subscribe(() => {
+        this.documentListChangedEvent.next(this.documents.slice());
+      });
   }
 }
