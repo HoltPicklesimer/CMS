@@ -1,6 +1,5 @@
 import { ContactService } from './../contacts/contact.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { MOCKMESSAGES } from './MOCKMESSAGES';
 import { Message } from './message.model';
 import { EventEmitter, Injectable } from '@angular/core';
 

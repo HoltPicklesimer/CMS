@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Contact } from './contact.model';
 import { Injectable } from '@angular/core';
-import { MOCKCONTACTS } from './MOCKCONTACTS';
 
 @Injectable({
   providedIn: 'root',

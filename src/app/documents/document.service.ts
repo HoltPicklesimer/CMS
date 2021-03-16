@@ -1,4 +1,3 @@
-import { MOCKDOCUMENTS } from './MOCKDOCUMENTS';
 import { Document } from './document.model';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
