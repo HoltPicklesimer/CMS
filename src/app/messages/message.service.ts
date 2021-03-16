@@ -1,4 +1,5 @@
-import { HttpClient } from '@angular/common/http';
+import { ContactService } from './../contacts/contact.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MOCKMESSAGES } from './MOCKMESSAGES';
 import { Message } from './message.model';
 import { EventEmitter, Injectable } from '@angular/core';
@@ -11,7 +12,10 @@ export class MessageService {
   private maxMessageId: number;
   messageChangedEvent = new EventEmitter<Message[]>();
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private contactService: ContactService
+  ) {
     this.fetchMessages();
   }
 
@@ -24,46 +28,48 @@ export class MessageService {
   }
 
   addMessage(message: Message) {
-    message.id = String(this.getMaxId());
-    this.messages.push(message);
-    this.storeMessages();
-  }
+    if (!message) {
+      return;
+    }
 
-  getMaxId(): number {
-    let maxId = 0;
+    // make sure id of the new Message is empty
+    message.id = '';
 
-    this.messages.forEach((message: Message) => {
-      const currentId = +message.id;
-      if (currentId > maxId) {
-        maxId = currentId;
-      }
-    });
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    return maxId;
+    // add to database
+    this.http
+      .post<{ message: string; createdMessage: Message }>(
+        'http://localhost:3000/messages',
+        message,
+        { headers: headers }
+      )
+      .subscribe((responseData) => {
+        // add new message to messages
+        responseData.createdMessage.sender = this.contactService.getContact(
+          '101'
+        );
+        this.messages.push(responseData.createdMessage);
+        this.sortAndSend();
+      });
   }
 
   fetchMessages() {
     this.http
-      .get<Message[]>(
-        'https://ng-cms-d4319-default-rtdb.firebaseio.com/messages.json'
-      )
-      .subscribe((messages: Message[]) => {
-        this.messages = messages.sort((a, b) =>
-          a.id < b.id ? -1 : a.id > b.id ? 1 : 0
-        );
-        this.maxMessageId = this.getMaxId();
-        this.messageChangedEvent.next(this.messages.slice());
+      .get<Message[]>('http://localhost:3000/messages')
+      .subscribe((response: any) => {
+        this.messages = response.messages;
+        this.sortAndSend();
       });
   }
 
-  storeMessages() {
-    this.http
-      .put(
-        'https://ng-cms-d4319-default-rtdb.firebaseio.com/messages.json',
-        this.messages
-      )
-      .subscribe(() => {
-        this.messageChangedEvent.next(this.messages.slice());
-      });
+  sortAndSend() {
+    this.messageChangedEvent.next(
+      this.messages
+        .slice()
+        .sort((a, b) =>
+          Number(a.id) < Number(b.id) ? -1 : Number(a.id) > Number(b.id) ? 1 : 0
+        )
+    );
   }
 }
